@@ -1,0 +1,242 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link rel="icon" href="/favicon.ico?v=1">
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu&display=swap" rel="stylesheet">
+    <link defer href="/css/base.css" rel="stylesheet">
+    <link defer href="/css/main.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/js/web3.js"></script>
+    <script defer type="text/javascript" src="/js/rivets.js"></script>
+    <script defer type="text/javascript" src="/js/core.js"></script>
+    <title>Web3 Login</title>
+</head>
+
+<body style="opacity:0;background-image: linear-gradient(180deg, #0F2027 0%, #203A43 150px, #fafafa 150%)!important;">
+    <header rv-class-scrolled="isScrolled" rv-hide="scanningQR" rv-class-dashboard="modal | is 'dashboard'">
+        <main class="canCloseModals">
+            <logo onclick="if(window.location.pathname != '/') window.location.href='/'">
+                Web3 Login
+            </logo>
+            <nav>
+                <li>
+                    <button rv-show="isLoggedIn" onclick="d97.modal('dashboard')" rv-class-active="modal | is 'dashboard'">
+                        Dashboard
+                    </button>
+                    <button rv-hide="isLoggedIn" onclick="d97.modal('connect')" rv-class-active="modal | is 'connect'">
+                        connect
+                    </button>
+                    <button rv-show="isLoggedIn" onclick="d97.modal('logout')" rv-class-active="modal | is 'logout'">
+                        Log out
+                    </button>
+                </li>
+            </nav>
+        </main>
+    </header>
+
+    <section databound first hero>
+        <main>
+            <div column="6">
+                <h2 weight="bold">Web3js</h2>
+                <h3 weight="thin">Login flow</h3>
+            </div>
+            <div align="center" font="big" weight="bold" column="6" monospace>:)</div>
+        </main>
+        <shield></shield>
+    </section>
+
+    <section modal dashboard databound rv-class-show="modal | is 'dashboard'">
+        <main>
+            <div column="3">
+                <nav>
+                    <li rv-class-active="dash | is 'home'" onclick="d97.dashButton('home')">
+                        Home
+                    </li>
+                    <li rv-class-active="dash | is 'settings'" onclick="d97.dashButton('settings')">
+                        Settings
+                    </li>
+                </nav>
+            </div>
+
+            <div rv-show="dash | is 'home'" wrap column="9">
+                <div content>
+                    <h1>Home</h1>
+                    <div loader rv-hide="home">Loading...</div>
+                    <div rv-show="home">
+                        {user.address}
+                        <p style="color:rgba(0,0,0,0.5);font-family:monospace; margin-top:32px; text-align:left;">
+                            Last update: <span rv-text="home.request | toLocalTime"></span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div rv-show="dash | is 'groups'" wrap column="9">
+                <div content>
+                    <h1>Groups</h1>
+                    <div loader rv-show="groups.loading">Loading...</div>
+                    <div rv-hide="groups.loading">
+                        <p rv-html="groups.hello"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div rv-show="dash | is 'products'" wrap column="9">
+                <div content>
+                    <h1>Products</h1>
+                    <div loader rv-show="products.loading">Loading...</div>
+                    <div rv-hide="products.loading">
+                        <p rv-html="products.hello"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div rv-show="dash | is 'settings'" wrap column="9">
+                <div content>
+                    <h1>Settings</h1>
+                    <div loader rv-hide="home">Loading...</div>
+                    <div rv-show="home">
+                        <hr />
+                        <div column="12">
+                            <button onclick="d97.data.showAccessToken = true" rv-hide="showAccessToken">Reveal Access-Token</button>
+                            <p style="cursor:pointer;" rv-show="showAccessToken">
+                                <button onclick="d97.data.showAccessToken = false" rv-show="showAccessToken">Hide Access-Token</button>
+
+                                <div column="6" rv-show="showAccessToken" selectable>
+                                    <pre rv-text="accessToken"></pre>
+                                </div>
+
+                                <div column="6" style="text-align:center" rv-show="showAccessToken">
+                                    <div style="text-align:center;" rv-show="QRWasGenerated">
+                                        <div style="display:inline-block;" qr id="qrcode"></div>
+                                    </div>
+                                    <button rv-hide="QRWasGenerated" onclick="generateQR()">Generate QR code</button>
+                                </div>
+                            </p>
+                        </div>
+                        <a warning onclick="d97.data.modal = 'logout'">Log out</a>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </section>
+
+    <section modal logout databound rv-class-show="modal | is 'logout'">
+        <main>
+            <div column="12">
+                <h1>
+                    Really log out?
+                </h1>
+                <p>
+                    {user.address} will be logged out
+                </p><br />
+                <button style="float:left;" onclick="d97.logout()">Log out</button>
+                <button style="float:right" onclick="if(window.location.hash == '#/logout') {
+          d97.modal('')
+        } else {
+          d97.modal('dashboard')
+          window.location.hash='#/dashboard/settings'       
+        }">Close</button>
+            </div>
+        </main>
+    </section>
+
+    <section modal login databound rv-class-show="modal | is 'connect'">
+        <main align="center">
+            <div column="12">
+                <h1>
+                    Connect
+                </h1>
+                <p>
+                    No account yet? Registration takes place automatically
+                </p>
+            </div>
+            <div column="12"><br /></div>
+            <div column="6">
+                <button onclick="d97.connect('metamask')">Connect with MetaMask</button>
+                <p hideIfLocked>Recommended</p>
+            </div>
+            <div column="6">
+                <button onclick="d97.modal('access_tokenConnect')">Connect with Access token</button>
+                <p hideIfLocked>Invite-only</p>
+            </div>
+            <div column="12">
+                <p><br />
+                    <b>On phone or device without MetaMask?</b><br />Login is still possible through Access Token login if one has been generated from a MetaMask-enabled device.
+                </p>
+            </div>
+        </main>
+    </section>
+
+    <section modal metamaskConnect databound rv-class-show="modal | is 'metamaskConnect'">
+        <main align="center">
+            <div column="12">
+                <h1>
+                    Connecting with Metamask
+                </h1>
+                <p rv-show="metamaskAddress">Sign with <span monospace inverted>{metamaskAddress}</span> ?<br />You can change the address in MetaMask extension</p>
+                <p>{status}</p>
+                <button onclick="d97.metamaskLogin()" rv-show="metamaskAddress">
+                    Sign
+                </button>
+                <p><br />Please note: login will invalidate all previous sessions and access-tokens for privacy reasons.<br /><br />New sessions and their associated access-token will be valid for 7 days.</p>
+            </div>
+        </main>
+    </section>
+
+    <section modal access_tokenConnect databound rv-class-show="modal | is 'access_tokenConnect'">
+        <main align="center">
+            <div column="12">
+                <h1>
+                    Connect with Access Code
+                </h1>
+                <p>
+                    Please input the access code below
+                </p>
+                <textarea style="max-width:500px; margin:0 auto;" monospace access-token placeholder="0x012312398"></textarea>
+                <br />
+                <div rv-hide="QR_LOADING">
+                    <button rv-hide="scanningQR" onclick="scanQR()">Scan QR</button>
+                    <div class="videoWrap" rv-show="scanningQR" style=""><video rv-show="scanningQR" id="preview"></video></div>
+                    <br />
+                    <br />
+                    or
+                    <br />
+                </div>
+                <br />
+                <button onclick="d97.accessTokenSubmit()">
+                    Submit
+                </button>
+            </div>
+        </main>
+    </section>
+
+    <section modal 404 databound rv-class-show="modal | is '404'">
+        <main align="center">
+            <div column="12">
+                <h1>
+                    Page Not Found
+                </h1>
+                <p>
+                    Please try later or check your URL
+                </p>
+            </div>
+        </main>
+    </section>
+
+    <footer>
+        <shield></shield>
+        <main style="min-height:220px">
+            <div align="left" column="6">
+                <p>Contact: <a href="mailto:dappjump@gmail.com">dappjump@gmail.com</a></p>
+            </div>
+        </main>
+    </footer>
+
+</body>
+
+</html>

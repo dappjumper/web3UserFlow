@@ -1,0 +1,32 @@
+{
+  "name": "dappjump",
+  "version": "0.0.1",
+  "description": "The main server",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "bootjs"
+  ],
+  "author": "Tobias Andersen",
+  "license": "ISC",
+  "dependencies": {
+    "bignumber.js": "^9.0.0",
+    "concise.css": "^4.1.2",
+    "ethereumjs-tx": "^2.1.1",
+    "ethereumjs-util": "^6.1.0",
+    "ethereumjs-wallet": "^0.6.3",
+    "fastify": "^2.6.0",
+    "fastify-formbody": "^3.1.0",
+    "fastify-helmet": "^3.0.1",
+    "fastify-jwt": "^1.0.0",
+    "fastify-static": "^2.5.0",
+    "foundation-sites": "^6.5.3",
+    "jquery": "^3.4.1",
+    "mongodb": "3.x.x",
+    "request": "^2.88.0",
+    "what-input": "^5.2.3"
+  }
+}
