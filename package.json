@@ -24,7 +24,7 @@
     "fastify-jwt": "^1.0.0",
     "fastify-static": "^2.5.0",
     "foundation-sites": "^6.5.3",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "mongodb": "3.x.x",
     "request": "^2.88.0",
     "what-input": "^5.2.3"
